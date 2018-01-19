@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.steers.subbook.R;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -42,7 +43,7 @@ public class SubscriptionAdapter extends ArrayAdapter<Subscription> {
 
         String name = subscriptions.get(position).getName();
         String date = sm.format(subscriptions.get(position).getDate());
-        String cost = Double.toString(subscriptions.get(position).getCost());
+        String cost = NumberFormat.getCurrencyInstance().format(subscriptions.get(position).getCost());
 
         NameTextView.setText(name);
         DateTextView.setText(date);

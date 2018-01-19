@@ -33,6 +33,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
+        android:textAlignment="textEnd"
         android:textSize="24sp"
         tools:text="Cost" />
 </LinearLayout>

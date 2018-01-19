@@ -2,4 +2,9 @@
     <string name="app_name">SubBook</string>
     <string name="NewButton">New</string>
     <string name="AddSubscriptionTitle">Add Subscription</string>
+    <string name="New_Subscription_Field_Name">Subscription</string>
+    <string name="New_Subscription_Field_Date">Date</string>
+    <string name="New_Subscription_Field_Description">Description (Optional)</string>
+    <string name="New_Subscription_Field_Cost">Amount ($)</string>
+    <string name="New_Subscription_Button_Add">Add</string>
 </resources>

@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/TotalValueView"
+        android:id="@+id/TotalCostTextView"
         android:layout_width="236dp"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
