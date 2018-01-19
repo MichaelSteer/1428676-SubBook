@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SubBook</string>
+    <string name="NewButton">New</string>
+    <string name="AddSubscriptionTitle">Add Subscription</string>
 </resources>
