@@ -7,7 +7,7 @@
     tools:context="com.steers.subbook.NewSubscriptionActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/New_Subscription_Name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -15,13 +15,13 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/New_Subscription_Field_Name"
-        android:inputType="textPersonName"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/New_Subscription_Date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -29,13 +29,15 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/New_Subscription_Field_Date"
-        android:inputType="textPersonName"
+        android:inputType="date"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/New_Subscription_Name"
+        tools:focusableInTouchMode="false" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/New_Subscription_Amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -43,15 +45,16 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/New_Subscription_Field_Cost"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
+        android:singleLine="true"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/New_Subscription_Description" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/New_Subscription_Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -59,21 +62,38 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/New_Subscription_Field_Description"
-        android:inputType="textPersonName"
+        android:inputType="text"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/New_Subscription_Date" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/AddSubscriptionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:onClick="addButtonPressed"
         android:text="@string/New_Subscription_Button_Add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/New_Subscription_Amount" />
+
+    <TextView
+        android:id="@+id/New_Subscription_Error_Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textColor="?android:attr/colorError"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AddSubscriptionButton" />
+
 </android.support.constraint.ConstraintLayout>

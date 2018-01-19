@@ -16,19 +16,19 @@ public class Subscription {
     private Date date;
     private double cost;
 
-    public Subscription(String name, double cost) throws NameTooLongException, NegativeCostException {
+    public Subscription(String name, double cost, Date date) throws NameTooLongException, NegativeCostException {
         if(name.length() > NAME_LENGTH)
             throw new NameTooLongException("Name length is: " + String.valueOf(name.length()));
         if (cost < 0)
             throw new NegativeCostException("Cost is negative.");
 
-        this.date = new Date(System.currentTimeMillis());
+        this.date = date;
         this.name = name;
         this.cost = cost;
         this.comment = "";
     }
 
-    public Subscription(String name, double cost, String comment) throws NameTooLongException, NegativeCostException, CommentTooLongException {
+    public Subscription(String name, double cost, Date date, String comment) throws NameTooLongException, NegativeCostException, CommentTooLongException {
         if(name.length() > NAME_LENGTH)
             throw new NameTooLongException("Name length is: " + String.valueOf(name.length()));
         if (cost < 0)
@@ -36,7 +36,7 @@ public class Subscription {
         if(comment.length() > COMMENT_LENGTH)
             throw new CommentTooLongException("Comment length is: " + String.valueOf(comment.length()));
 
-        date = new Date(System.currentTimeMillis());
+        this.date = date;
         this.name = name;
         this.cost = cost;
         this.comment = comment;

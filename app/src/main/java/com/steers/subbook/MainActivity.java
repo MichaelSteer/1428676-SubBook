@@ -14,13 +14,14 @@ import com.steers.Subscription.Subscription;
 import com.steers.Subscription.SubscriptionAdapter;
 import com.steers.Subscription.TotalSubscriptionCost;
 
+import java.util.Date;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Subscription test = new Subscription("Netflix", 10.99, "Netflix Media Service");
-    private Subscription test2 = new Subscription("Rent", 1000.00, "Apartment Rent");
-    private Subscription test3 = new Subscription("Utilities", 250.5, "Apartment Utilities");
+    private Subscription test = new Subscription("Netflix", 10.99, new Date(System.currentTimeMillis()), "Netflix Media Service");
+    private Subscription test2 = new Subscription("Rent", 1000.00, new Date(System.currentTimeMillis()), "Apartment Rent");
+    private Subscription test3 = new Subscription("Utilities", 250.5, new Date(System.currentTimeMillis()),"Apartment Utilities");
     private ArrayList<Subscription> testlist = new ArrayList<Subscription>();
 
     public MainActivity() throws NameTooLongException, CommentTooLongException, NegativeCostException {
@@ -51,4 +52,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewSubscriptionActivity.class);
         startActivity(intent);
     }
+
 }

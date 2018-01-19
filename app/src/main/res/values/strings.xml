@@ -7,4 +7,7 @@
     <string name="New_Subscription_Field_Description">Description (Optional)</string>
     <string name="New_Subscription_Field_Cost">Amount ($)</string>
     <string name="New_Subscription_Button_Add">Add</string>
+    <string name="NameTooLongErrorString">Subscription Name is too long. Must be 30 Characters</string>
+    <string name="NegativeAmountErrorString">Amount Must not Be Negative!</string>
+    <string name="DescriptionTooLongErrorString">Description is too Long!</string>
 </resources>
