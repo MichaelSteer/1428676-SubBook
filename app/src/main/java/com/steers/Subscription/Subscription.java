@@ -14,12 +14,12 @@ public class Subscription {
 
     private String name, comment;
     private Date date;
-    private BigDecimal cost;
+    private double cost;
 
-    Subscription(String name, BigDecimal cost) throws NameTooLongException, NegativeCostException {
+    public Subscription(String name, double cost) throws NameTooLongException, NegativeCostException {
         if(name.length() > NAME_LENGTH)
             throw new NameTooLongException("Name length is: " + String.valueOf(name.length()));
-        if (cost.compareTo(BigDecimal.ZERO) < 0)
+        if (cost < 0)
             throw new NegativeCostException("Cost is negative.");
 
         this.date = new Date(System.currentTimeMillis());
@@ -28,10 +28,10 @@ public class Subscription {
         this.comment = "";
     }
 
-    Subscription(String name, BigDecimal cost, String comment) throws NameTooLongException, NegativeCostException, CommentTooLongException {
+    public Subscription(String name, double cost, String comment) throws NameTooLongException, NegativeCostException, CommentTooLongException {
         if(name.length() > NAME_LENGTH)
             throw new NameTooLongException("Name length is: " + String.valueOf(name.length()));
-        if (cost.compareTo(BigDecimal.ZERO) < 0)
+        if (cost < 0)
             throw new NegativeCostException("Cost is negative.");
         if(comment.length() > COMMENT_LENGTH)
             throw new CommentTooLongException("Comment length is: " + String.valueOf(comment.length()));
@@ -70,12 +70,12 @@ public class Subscription {
         this.date = date;
     }
 
-    public BigDecimal getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) throws NegativeCostException {
-        if (cost.compareTo(BigDecimal.ZERO) < 0)
+    public void setCost(double cost) throws NegativeCostException {
+        if (cost < 0)
             throw new NegativeCostException("Cost is negative.");
         else this.cost = cost;
     }
