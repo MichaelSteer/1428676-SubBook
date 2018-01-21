@@ -3,7 +3,9 @@ package com.steers.subbook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.SubscriptionListView);
         listView.setAdapter(subscriptionAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                editSubscription(adapterView, position, id);
+            }
+        });
         TextView totalCost = findViewById(R.id.TotalCostTextView);
         TotalSubscriptionCost subscriptionCost = new TotalSubscriptionCost(testlist);
         String totalCostText = "Total: " + subscriptionCost.getTotalCostString();
@@ -53,4 +61,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void editSubscription(AdapterView<?> adapterView, int position, long id) {
+
+        Log.d("LISTCLICK", "onItemClick: Clicked Item" + position);
+        Intent intent = new Intent(this, NewSubscriptionActivity.class);
+
+        Subscription selected = (Subscription) adapterView.getItemAtPosition(position);
+        Log.d("LISTCLICK", "editSubscription: " + selected.toString());
+
+        intent.putExtras(selected.toBundle());
+        intent.putExtra("Position", position);
+        startActivity(intent);
+    }
 }

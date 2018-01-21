@@ -1,7 +1,13 @@
 package com.steers.Subscription;
 
+import android.os.Bundle;
+import android.util.Log;
+
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Michael Steer
@@ -9,6 +15,7 @@ import java.util.Date;
  */
 
 public class Subscription {
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final int NAME_LENGTH = 20;
     public static final int COMMENT_LENGTH = 30;
 
@@ -65,7 +72,10 @@ public class Subscription {
     public Date getDate() {
         return date;
     }
-
+    public String getDateString() {
+        SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMAT);
+        return sf.format(getDate());
+    }
     public void setDate(Date date) {
         this.date = date;
     }
@@ -78,5 +88,48 @@ public class Subscription {
         if (cost < 0)
             throw new NegativeCostException("Cost is negative.");
         else this.cost = cost;
+    }
+
+    public String toString() {
+        String out;
+        out =  "Name:    "  + getName() + "\n";
+        out += "Comment: " + getComment() + "\n";
+        out += "Amount:  " + getCost() + "\n";
+
+        return out;
+    }
+
+    public Bundle toBundle() {
+        SimpleDateFormat sm = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+        Bundle bundle = new Bundle();
+        bundle.putString("Name", getName());
+        bundle.putString("Comment", getComment());
+        bundle.putString("Date", sm.format(getDate()));
+        bundle.putDouble("Amount", getCost());
+
+        return bundle;
+    }
+
+    public static Subscription fromBundle(Bundle bundle) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+
+        String name = bundle.getString("Name");
+        String comment = bundle.getString("Comment");
+        Date date;
+        try {
+            date = formatter.parse(bundle.getString("Date"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        double cost = bundle.getDouble("Amount");
+
+        try {
+            return new Subscription(name, cost, date, comment);
+        } catch (NameTooLongException | NegativeCostException | CommentTooLongException e) {
+            Log.d("DEBUNDLE", "fromBundle: This should never be thrown");
+            e.printStackTrace();
+        }
+        return null;
     }
 }

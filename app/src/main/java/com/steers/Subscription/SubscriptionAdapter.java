@@ -32,7 +32,7 @@ public class SubscriptionAdapter extends ArrayAdapter<Subscription> {
 
     public View getView(int position, View view, ViewGroup parent) {
 
-        SimpleDateFormat sm = new SimpleDateFormat("yyyy-mm-dd", Locale.getDefault());
+        SimpleDateFormat sm = new SimpleDateFormat(Subscription.DATE_FORMAT, Locale.getDefault());
 
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.subscriptionrow, null, true);
@@ -42,7 +42,7 @@ public class SubscriptionAdapter extends ArrayAdapter<Subscription> {
         TextView CostTextView = rowView.findViewById(R.id.CostTextView);
 
         String name = subscriptions.get(position).getName();
-        String date = sm.format(subscriptions.get(position).getDate());
+        String date = subscriptions.get(position).getDateString();
         String cost = NumberFormat.getCurrencyInstance().format(subscriptions.get(position).getCost());
 
         NameTextView.setText(name);
