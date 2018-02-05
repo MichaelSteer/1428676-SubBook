@@ -1,3 +1,7 @@
+/*
+  CommentTooLongException.java
+  @Author Michael Steer
+ */
 package com.steers.Subscription;
 
 /**
@@ -5,6 +9,9 @@ package com.steers.Subscription;
  * on 2018-01-18.
  */
 
+/**
+ * CommentTooLongException. Thrown when a comment for a subscription is too long
+ */
 public class CommentTooLongException extends Exception {
     CommentTooLongException(String message) {
         super(message);

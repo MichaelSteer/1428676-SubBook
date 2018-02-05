@@ -1,3 +1,9 @@
+/*
+ NewSubscriptionActivity.java
+ @author Michael Steer
+
+ Activity for creating and editing subscriptions
+ */
 package com.steers.subbook;
 
 import android.app.DatePickerDialog;
@@ -23,6 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * New / Edit Subscription activity class
+ */
 public class NewSubscriptionActivity extends AppCompatActivity {
 
     private EditText subscriptionEditText, dateEditText, descriptionEditText, amountEditText;
@@ -32,6 +41,11 @@ public class NewSubscriptionActivity extends AppCompatActivity {
     private boolean toDelete = false;
 
     int position;
+
+    /**
+     * Called when the class is created
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         existing = false;
@@ -40,12 +54,14 @@ public class NewSubscriptionActivity extends AppCompatActivity {
 
         Intent passed = getIntent();
 
+        // Text boxes
         subscriptionEditText = findViewById(R.id.New_Subscription_Name);
         dateEditText = findViewById(R.id.New_Subscription_Date);
         descriptionEditText = findViewById(R.id.New_Subscription_Description);
         amountEditText = findViewById(R.id.New_Subscription_Amount);
         errorMessage = findViewById(R.id.New_Subscription_Error_Text);
 
+        // Date Edit field
         dateEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -56,58 +72,65 @@ public class NewSubscriptionActivity extends AppCompatActivity {
             }
         });
 
+        // Amount Edit field
         amountEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int action, KeyEvent keyEvent) {
-                Log.d("EDITORACTION", "onEditorAction: EDITOR ACTION");
                 try {
                     String text = amountEditText.getText().toString();
                     amountEditText.setText(text);
                 }
-                catch (NumberFormatException e) {
-                    Log.d("AMOUNT FORMAT", "onEditorAction: Bad Number formatting. Leaving the numerical value alone");
-                }
-                catch (NullPointerException e) {
-                    Log.d("BADBREAK", "onEditorAction: SHOULDNT BE BREAKING HERE");
+                catch (NumberFormatException | NullPointerException e) {
+                    e.printStackTrace();
+                    return false;
                 }
                 return false;
             }
         });
 
+        // Check to see if the subscription is new or existing by seeing if there is a bundle
         try {
             existingSubscripton = passed.getExtras();
             if (!existingSubscripton.isEmpty()) {
-                Log.d("EXISTING", "onCreate: PREXISTING SUBSCRIPTION");
                 existing = true;
             }
         } catch (NullPointerException e) {
-            Log.d("NONEXISTING", "onCreate: NEW SUBSCRIPTION");
+            e.printStackTrace();
         }
 
         // Existing Subscription
         if (existing) {
             Subscription existingSubscription = Subscription.fromBundle(existingSubscripton);
+
+            // Change the title to display the subscription name
             String title = existingSubscription.getName() + ": " + getString(R.string.ExistingSubscriptionTitle);
             setTitle(title);
 
+            // Change the button to display edit
             Button editButton = findViewById(R.id.AddSubscriptionButton);
             editButton.setText(R.string.ExistingSubscriptionButton);
 
 
+            // Fill in fields with existing information
             subscriptionEditText.setText(existingSubscription.getName());
             descriptionEditText.setText(existingSubscription.getComment());
             amountEditText.setText(Double.toString(existingSubscription.getCost()));
             dateEditText.setText(existingSubscription.getDateString());
         }
 
-        // Only if not an existing subscription
+        // New Subscription
         else {
             setTitle(R.string.NewSubscriptionTitle);
+
+            // Get rid of the delete button
             Button deleteButton = findViewById(R.id.DeleteButton);
             deleteButton.setVisibility(View.GONE);
         }
     }
 
+    /** Display a date picket when a text field is clicked
+     * Reference: https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
+     */
     public void showDatePicker() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -123,13 +146,21 @@ public class NewSubscriptionActivity extends AppCompatActivity {
                     }
                 }, year, month, day);
         datePickerDialog.show();
-        datePickerDialog.show();
     }
 
+    /**
+     * Called when the Delete button is pressed
+     * @param v {@code View}
+     */
     void deleteButtonPressed(View v) {
         toDelete = true;
         addButtonPressed(v);
     }
+
+    /**
+     * Called when the add button is pressed
+     * @param v {@code View}
+     */
     public void addButtonPressed(View v) {
         SimpleDateFormat formatter = new SimpleDateFormat(Subscription.DATE_FORMAT);
         boolean success = true;
@@ -137,16 +168,16 @@ public class NewSubscriptionActivity extends AppCompatActivity {
         Date date;
         double amount;
 
+        // Check name string to see if its null
         name = subscriptionEditText.getText().toString();
         if (name.matches("")) {
-            Log.d("NULLPTR", "addButtonPressed: Missing Subscription Text");
             errorMessage.setText("Enter a Subscription Name");
             return;
         }
 
+        // Check date string to see if its valid
         dateString = dateEditText.getText().toString();
         if(dateString.matches("")) {
-            Log.d("NULLPTR", "addButtonPressed: Missing date value");
             errorMessage.setText("Enter a Date");
             return;
         }
@@ -154,15 +185,14 @@ public class NewSubscriptionActivity extends AppCompatActivity {
             date = formatter.parse(dateString);
         }
         catch (ParseException e) {
-            Log.d("PARSEEXCEPTION", "addButtonPressed: Bad Date");
             errorMessage.setText("Invalid Date");
             return;
         }
 
         amountText = amountEditText.getText().toString();
 
+        // Check amount to see if it is valid
         if(amountText.matches("")) {
-            Log.d("NULLPTR", "addButtonPressed: Missing amount Text");
             errorMessage.setText("Enter a monthly amount");
             return;
         }
@@ -173,39 +203,29 @@ public class NewSubscriptionActivity extends AppCompatActivity {
 
         description = descriptionEditText.getText().toString();
 
-        Log.d("MADE IT", "addButtonPressed: MADE IT THIS FAR");
-
-
         Intent data = new Intent();
         Subscription out = null;
         try {
             out = new Subscription(name, amount, date, description);
-        } catch (NameTooLongException e) {
-            e.printStackTrace();
-        } catch (NegativeCostException e) {
-            e.printStackTrace();
-        } catch (CommentTooLongException e) {
+        } catch (NameTooLongException | NegativeCostException | CommentTooLongException e) {
             e.printStackTrace();
         }
 
         if (out == null) {
-            Log.d("BAD", "addButtonPressed: Bad Subscription creation");
+            throw new NullPointerException("This subscription shouldn't be null");
         }
 
         data.putExtras(out.toBundle());
 
+        // Push an index of 0 if new so bundling doesnt complain
         if (!existing) {
-            Log.d("NEW", "addButtonPressed: New Subscription");
             data.putExtra("Position", 0);
         }
         else {
-            Log.d("EXISTING", "addButtonPressed: Existing Subscription");
             position = existingSubscripton.getInt("Position");
             data.putExtra("delete", toDelete);
-            Log.d("POS", "addButtonPressed: POSITION: "+position);
             data.putExtra("Position", position);
         }
-        Log.d("FINISHED", "addButtonPressed: Finished adding new entry");
         setResult(RESULT_OK, data);
         finish();
     }

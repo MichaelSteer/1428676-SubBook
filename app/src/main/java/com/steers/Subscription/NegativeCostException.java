@@ -1,10 +1,14 @@
-package com.steers.Subscription;
-import java.lang.Exception;
-/**
- * Created by Michael Steer
- * on 2018-01-18.
+/*
+  NegativeCostException.java
+  @Author Michael Steer
  */
 
+package com.steers.Subscription;
+import java.lang.Exception;
+
+/**
+ * NegativeCostException. Thrown by the Subscription class when a cost is negative
+ */
 public class NegativeCostException extends Exception {
     NegativeCostException(String message) {
         super(message);

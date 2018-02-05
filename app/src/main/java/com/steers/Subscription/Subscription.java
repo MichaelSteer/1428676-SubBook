@@ -1,3 +1,7 @@
+/*
+ Subscription.java
+ @author Michael Steer
+ */
 package com.steers.Subscription;
 
 import android.os.Bundle;
@@ -10,12 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+
 /**
- * Created by Michael Steer
- * on 2018-01-18.
+ * Subscription class. This class contained a name, date, comment, and dollar amount
+ * for monthly subscriptions
  */
-
-
 public class Subscription {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -56,7 +59,6 @@ public class Subscription {
         try {
             return new Subscription(name, cost, date, comment);
         } catch (NameTooLongException | NegativeCostException | CommentTooLongException e) {
-            Log.d("DEBUNDLE", "fromBundle: This should never be thrown");
             e.printStackTrace();
         }
         return null;
@@ -119,7 +121,6 @@ public class Subscription {
 
     public void setName(String name) throws NameTooLongException {
         if(name.length() > NAME_LENGTH) {
-            Log.d("NAMETOOLONG", "setName: Name is too long");
             throw new NameTooLongException("Name length is: " + String.valueOf(name.length()));
         }
         else this.name = name;
@@ -135,7 +136,6 @@ public class Subscription {
 
     public void setComment(String comment) throws CommentTooLongException {
         if(comment.length() > NAME_LENGTH) {
-            Log.d("COMMENTTOOLONG", "setComment: Comment is too long");
             throw new CommentTooLongException("Comment length is: " + String.valueOf(name.length()));
         }
         else this.comment = comment;
@@ -181,7 +181,6 @@ public class Subscription {
      */
     public void setCost(double cost) throws NegativeCostException {
         if (cost < 0) {
-            Log.d("NEGATIVECOST", "setCost: Cost is negative");
             throw new NegativeCostException("Cost is negative.");
         }
         else this.cost = cost;
@@ -218,7 +217,6 @@ public class Subscription {
         Subscription sub;
         SimpleDateFormat sm = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         String[] tokens = name.split(":");
-        Log.d("STRING", "Load: " + name);
         String sname = tokens[0];
         Date sdate = null;
         try {

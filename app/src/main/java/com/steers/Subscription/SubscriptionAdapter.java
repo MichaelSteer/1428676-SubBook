@@ -1,3 +1,7 @@
+/*
+ SubscriptionAdapter.java
+ @author Michael Steer
+ */
 package com.steers.Subscription;
 
 import android.app.Activity;
@@ -14,15 +18,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-/**
- * Created by Michael Steer
- * on 2018-01-18.
- */
 
+/**
+ * SubscriptionAdapter class. Takes an @code{ArrayList<Subscription>}
+ * and produces an adapter for use with Androids ListView
+ *
+ * References: This tutorial https://appsandbiscuits.com/listview-tutorial-android-12-ccef4ead27cc
+ * for how ListViews work and sniplets of CMPUT 301 Lab code
+ */
 public class SubscriptionAdapter extends ArrayAdapter<Subscription> {
     private final Activity context;
     private final ArrayList<Subscription> subscriptions;
 
+    /**
+     * Constructor
+     * @param context {@code Activity} The activity making the function call
+     * @param subscriptions {@code ArrayList<Subscription>} the subscription list
+     */
     public SubscriptionAdapter(Activity context, ArrayList<Subscription> subscriptions) {
         super(context, R.layout.subscriptionrow, subscriptions);
 
@@ -30,6 +42,13 @@ public class SubscriptionAdapter extends ArrayAdapter<Subscription> {
         this.subscriptions = subscriptions;
     }
 
+    /**
+     * Returns an individual list element as a view
+     * @param position {@code int} the position in the ArrayList
+     * @param view {@code View} the input view
+     * @param parent {@code View} the ListView
+     * @return
+     */
     public View getView(int position, View view, ViewGroup parent) {
 
         SimpleDateFormat sm = new SimpleDateFormat(Subscription.DATE_FORMAT, Locale.getDefault());
