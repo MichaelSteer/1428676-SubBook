@@ -202,43 +202,6 @@ public class Subscription {
     }
 
     /**
-     * Return a colon (:) seperated string representing the Subscription
-     * @return The Subscription in string form
-     */
-    public String save() {
-        return getName() + " : " + getDateString() + " : " + getComment() + " : " + getCost() + "\n";
-    }
-
-    /**
-     * Set the parameters of the string from a String
-     * @param name The string representation of the Subscription
-     */
-    public static Subscription Load(String name) {
-        Subscription sub;
-        SimpleDateFormat sm = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-        String[] tokens = name.split(":");
-        String sname = tokens[0];
-        Date sdate = null;
-        try {
-            sdate = sm.parse(tokens[1]);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String scomment = tokens[2];
-        double scost = Double.valueOf(tokens[3]);
-
-        try {
-            sub = new Subscription(sname, scost, sdate, scomment);
-            return sub;
-        } catch (NameTooLongException | NegativeCostException | CommentTooLongException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-
-    }
-
-    /**
      * Returns a Bundle Representation of the Subscription for passing between
      * Android Activities
      *
