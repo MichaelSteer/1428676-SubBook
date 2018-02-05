@@ -17,7 +17,7 @@ import com.steers.Subscription.CommentTooLongException;
 import com.steers.Subscription.NameTooLongException;
 import com.steers.Subscription.NegativeCostException;
 import com.steers.Subscription.Subscription;
-import java.text.NumberFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,9 +28,13 @@ public class NewSubscriptionActivity extends AppCompatActivity {
     private EditText subscriptionEditText, dateEditText, descriptionEditText, amountEditText;
     private TextView errorMessage;
     private Bundle existingSubscripton;
+    private boolean existing;
+    private boolean toDelete = false;
+
+    int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean existing = false;
+        existing = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_subscription);
 
@@ -57,7 +61,7 @@ public class NewSubscriptionActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int action, KeyEvent keyEvent) {
                 Log.d("EDITORACTION", "onEditorAction: EDITOR ACTION");
                 try {
-                    String text = NumberFormat.getCurrencyInstance().format(Double.parseDouble(amountEditText.getText().toString()));
+                    String text = amountEditText.getText().toString();
                     amountEditText.setText(text);
                 }
                 catch (NumberFormatException e) {
@@ -89,6 +93,7 @@ public class NewSubscriptionActivity extends AppCompatActivity {
             Button editButton = findViewById(R.id.AddSubscriptionButton);
             editButton.setText(R.string.ExistingSubscriptionButton);
 
+
             subscriptionEditText.setText(existingSubscription.getName());
             descriptionEditText.setText(existingSubscription.getComment());
             amountEditText.setText(Double.toString(existingSubscription.getCost()));
@@ -98,6 +103,8 @@ public class NewSubscriptionActivity extends AppCompatActivity {
         // Only if not an existing subscription
         else {
             setTitle(R.string.NewSubscriptionTitle);
+            Button deleteButton = findViewById(R.id.DeleteButton);
+            deleteButton.setVisibility(View.GONE);
         }
     }
 
@@ -119,6 +126,10 @@ public class NewSubscriptionActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    void deleteButtonPressed(View v) {
+        toDelete = true;
+        addButtonPressed(v);
+    }
     public void addButtonPressed(View v) {
         SimpleDateFormat formatter = new SimpleDateFormat(Subscription.DATE_FORMAT);
         boolean success = true;
@@ -162,26 +173,40 @@ public class NewSubscriptionActivity extends AppCompatActivity {
 
         description = descriptionEditText.getText().toString();
 
+        Log.d("MADE IT", "addButtonPressed: MADE IT THIS FAR");
+
+
+        Intent data = new Intent();
+        Subscription out = null;
         try {
-            Log.d("MADE IT", "addButtonPressed: MADE IT THIS FAR");
-            Subscription newSubscription = new Subscription(name, amount, date, description);
-            Log.d("FINISHED", "addButtonPressed: Finished adding new entry");
-            this.finish();
+            out = new Subscription(name, amount, date, description);
+        } catch (NameTooLongException e) {
+            e.printStackTrace();
+        } catch (NegativeCostException e) {
+            e.printStackTrace();
+        } catch (CommentTooLongException e) {
+            e.printStackTrace();
         }
 
-        catch (NameTooLongException e) {
-            Log.d("BADNAME", "addButtonPressed: DIDNT WORK");
-            errorMessage.setText(R.string.NameTooLongErrorString);
+        if (out == null) {
+            Log.d("BAD", "addButtonPressed: Bad Subscription creation");
         }
 
-        catch (NegativeCostException e) {
-            Log.d("BADVALUE", "addButtonPressed: DIDNT WORK");
-            errorMessage.setText(R.string.NegativeAmountErrorString);
-        }
+        data.putExtras(out.toBundle());
 
-        catch (CommentTooLongException e) {
-            Log.d("BADDESC", "addButtonPressed: DIDNT WORK");
-            errorMessage.setText(R.string.DescriptionTooLongErrorString);
+        if (!existing) {
+            Log.d("NEW", "addButtonPressed: New Subscription");
+            data.putExtra("Position", 0);
         }
+        else {
+            Log.d("EXISTING", "addButtonPressed: Existing Subscription");
+            position = existingSubscripton.getInt("Position");
+            data.putExtra("delete", toDelete);
+            Log.d("POS", "addButtonPressed: POSITION: "+position);
+            data.putExtra("Position", position);
+        }
+        Log.d("FINISHED", "addButtonPressed: Finished adding new entry");
+        setResult(RESULT_OK, data);
+        finish();
     }
 }
