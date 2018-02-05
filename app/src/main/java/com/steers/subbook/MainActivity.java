@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("steer SubBook");
         setContentView(R.layout.activity_main);
 
         loadSubscriptions();
